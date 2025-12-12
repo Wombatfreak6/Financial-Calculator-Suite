@@ -71,9 +71,11 @@ body{
 .hero h1{margin:0 0 6px 0;font-size:1.6rem}
 .hero p {
   margin: 0;
-  color: rgba(0,0,0,0.55);
 }
 
+body.dark p {
+  color: #ddd;
+}
 
 /* Card grid */
 .card-grid{
