@@ -1,12 +1,180 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="./script.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FinCalc — Scroll SPA</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    
+
+  <!-- Loader -->
+  <div id="loader"><div class="spinner"></div></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <h2 class="logo">FinCalc</h2>
+      <button id="menuToggle" class="hamburger" aria-label="Toggle menu">☰</button>
+    </div>
+
+    <nav id="menu" class="menu">
+      <a class="menu-item active" data-target="dashboard">🏠 Dashboard</a>
+      <a class="menu-item" data-target="loan">💳 Loans</a>
+      <a class="menu-item" data-target="savings">📈 Savings</a>
+      <a class="menu-item" data-target="retirement">🕒 Retirement</a>
+      <a class="menu-item" data-target="tax">🧾 Tax</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button id="themeToggle" class="btn small">🌗 Theme</button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="content" id="content">
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section">
+      <div class="hero glass">
+        <h1>Make Smarter Financial Decisions</h1>
+        <p>Loans, savings, retirement & tax — beautifully simple, now scrollable.</p>
+      </div>
+
+      <h3 class="section-title">Quick Access</h3>
+
+      <div class="card-grid" id="cardGrid">
+        <div class="card glass" data-target="loan">
+          <img src="https://img.icons8.com/fluency/48/calculator.png" alt="">
+          <h4>EMI Calculator</h4>
+          <p class="muted small">Quick loan estimate</p>
+        </div>
+
+        <div class="card glass" data-target="savings">
+          <img src="money.png" alt="">
+          <h4>Savings Calculator</h4>
+          <p class="muted small">Compound interest</p>
+        </div>
+
+        <div class="card glass" data-target="retirement">
+          <img src="https://img.icons8.com/fluency/48/overtime.png" alt="">
+          <h4>Retirement Planner</h4>
+          <p class="muted small">Corpus estimator</p>
+        </div>
+
+        <div class="card glass" data-target="tax">
+          <img src="https://img.icons8.com/fluency/48/tax.png" alt="">
+          <h4>Tax Calculator</h4>
+          <p class="muted small">Income tax estimate</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOAN -->
+    <section id="loan" class="section glass section-pad">
+      <h2>Loan / EMI Calculator</h2>
+      <div class="form-row">
+        <div class="input-group">
+          <label for="loanAmount">Loan Amount (₹)</label>
+          <input id="loanAmount" type="number" placeholder="e.g. 500000" />
+        </div>
+        <div class="input-group">
+          <label for="loanRate">Interest Rate (%)</label>
+          <input id="loanRate" type="number" step="0.01" placeholder="annual %" />
+        </div>
+        <div class="input-group">
+          <label for="loanYears">Tenure (Years)</label>
+          <input id="loanYears" type="number" placeholder="Years" />
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="calcEmi">Calculate EMI</button>
+      </div>
+      <p class="result" id="emiResult"></p>
+    </section>
+
+    <!-- SAVINGS -->
+    <section id="savings" class="section glass section-pad">
+      <h2>Compound Interest Calculator</h2>
+      <div class="form-row">
+        <div class="input-group">
+          <label for="principal">Principal (₹)</label>
+          <input id="principal" type="number" placeholder="e.g. 100000" />
+        </div>
+        <div class="input-group">
+          <label for="interestRate">Rate (%)</label>
+          <input id="interestRate" type="number" step="0.01" />
+        </div>
+        <div class="input-group">
+          <label for="years">Years</label>
+          <input id="years" type="number" />
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="calcCompound">Calculate</button>
+      </div>
+      <p class="result" id="compoundResult"></p>
+    </section>
+
+    <!-- RETIREMENT -->
+    <section id="retirement" class="section glass section-pad">
+      <h2>Retirement Corpus Estimator</h2>
+      <div class="form-row">
+        <div class="input-group">
+          <label for="retireMonthly">Monthly Investment (₹)</label>
+          <input id="retireMonthly" type="number" />
+        </div>
+        <div class="input-group">
+          <label for="retireYears">Years to Invest</label>
+          <input id="retireYears" type="number" />
+        </div>
+        <div class="input-group">
+          <label for="retireRate">Return Rate (%)</label>
+          <input id="retireRate" type="number" step="0.01" />
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="calcRetire">Calculate</button>
+      </div>
+      <p class="result" id="retirementResult"></p>
+    </section>
+
+    <!-- TAX (History removed) -->
+    <section id="tax" class="section glass section-pad">
+      <h2>Tax Calculator</h2>
+
+      <div class="tax-grid">
+        <div class="tax-left">
+          <div class="input-group">
+            <label for="taxIncome">Annual Income (₹)</label>
+            <input id="taxIncome" type="number" placeholder="e.g. 900000" />
+          </div>
+
+          <div class="input-group">
+            <label for="regimeSelect">Choose Regime / Year</label>
+            <select id="regimeSelect">
+              <option value="Old-2022-23">Old Regime — 2022–23</option>
+              <option value="Old-2023-24">Old Regime — 2023–24</option>
+              <option value="New-2023-24">New Regime — 2023–24</option>
+              <option value="New-2024-25" selected>New Regime — 2024–25</option>
+            </select>
+          </div>
+
+          <div class="controls">
+            <button class="btn" id="calcTax">Calculate Tax</button>
+          </div>
+
+          <div class="result-box">
+            <p id="taxResult" class="result"></p>
+            <small class="muted">Cess applied: <span id="cessVal">4%</span></small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="height:48px"></div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
