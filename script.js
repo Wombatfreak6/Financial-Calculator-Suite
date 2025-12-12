@@ -48,65 +48,10 @@ const io = new IntersectionObserver((entries) => {
 
 sections.forEach(sec => io.observe(sec));
 
-/* ---------- Theme toggle (persist, accessible, keyboard) ---------- */
-const themeToggle = document.getElementById('themeToggle');
-const THEME_KEY = 'fin-theme-preference';
-
-function applyTheme(isDark, save = false){
-  if(isDark) document.body.classList.add('dark');
-  else document.body.classList.remove('dark');
-  try{ document.documentElement.dataset.theme = isDark ? 'dark' : 'light'; }catch(e){}
-  // update toggle UI
-  if(themeToggle){
-    themeToggle.setAttribute('aria-pressed', String(!!isDark));
-    themeToggle.textContent = isDark ? '🌙 Dark' : '☀️ Light';
-  }
-  if(save){
-    try{ localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); }catch(e){}
-  }
-}
-
-// initialize theme on load: saved preference -> OS preference -> default light
-(function initTheme(){
-  let saved = null;
-  try{ saved = localStorage.getItem(THEME_KEY); }catch(e){}
-  if(saved === 'dark') applyTheme(true, false);
-  else if(saved === 'light') applyTheme(false, false);
-  else {
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(prefersDark, false);
-  }
-})();
-
-if(themeToggle){
-  themeToggle.addEventListener('click', () => {
-    const isDark = document.body.classList.toggle('dark');
-    applyTheme(isDark, true);
-  });
-
-  // Keyboard shortcut: press 't' to toggle theme when not typing
-  window.addEventListener('keydown', (ev) => {
-    if(ev.key.toLowerCase() !== 't') return;
-    const tag = document.activeElement && document.activeElement.tagName;
-    const isEditable = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable || tag === 'SELECT';
-    if(isEditable) return; // avoid interfering while typing
-    ev.preventDefault();
-    const isDark = document.body.classList.toggle('dark');
-    applyTheme(isDark, true);
-  });
-
-  // If the OS theme changes and user hasn't chosen a preference, follow it
-  try{
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.addEventListener && mq.addEventListener('change', (e) => {
-      try{
-        const saved = localStorage.getItem(THEME_KEY);
-        if(saved) return; // user has chosen, don't override
-      }catch(e){}
-      applyTheme(e.matches, false);
-    });
-  }catch(e){}
-}
+/* ---------- Theme toggle ---------- */
+document.getElementById('themeToggle').addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+});
 
 /* ---------- EMI Calculator ---------- */
 document.getElementById('calcEmi').addEventListener('click', function(){
